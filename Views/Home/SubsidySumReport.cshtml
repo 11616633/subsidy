@@ -1,0 +1,308 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{ ViewData["Title"] = "Add Insurance Page";
+
+    string enteredBy = HttpContextAccessor.HttpContext.Session.GetString("ActiveDirectoryUser ID");
+}
+@model List<SubsidyReconciliation.Models.SubsidyRecord>
+@{
+    int currentPage = ViewBag.CurrentPage; // Retrieve currentPage from ViewBag
+    int rowsPerPage = ViewBag.RowsPerPage; // Retrieve rowsPerPage from ViewBag
+}
+<!-- Include CSS and JS -->
+<link href="~/css/custom_bootstrap.min.css" rel="stylesheet" />
+<script src="~/js/custom_bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="~/js/sweetalert2011.js"></script>
+<link href="~/css/loading.css" rel="stylesheet" />
+
+<style>
+    .card-primary.card-outline {
+        border-top-width: 4px;
+        border-top-style: solid;
+        border-top-color: #3c8dbc;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    input[type="text"], input[type="date"], input[type="file"], .form-control {
+        border: 0.1px solid #018db0;
+        border-radius: 4px;
+    }
+
+    label:not(.form-check-label):not(.custom-file-label) {
+        font-weight: 400;
+    }
+
+    span {
+        font-size: 14px;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+    .table-header {
+        background-color: darkseagreen;
+        color: white;
+    }
+
+    .page-numbers {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .page-button {
+        margin: 0 2px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="card card-4">
+                <div class="card-body card-outline card-primary">
+                    <form id="uploadForm" asp-action="UploadSubsidy" enctype="multipart/form-data" asp-controller="Home">
+                        <div id="page-content" class="container">
+                            <h5 style="text-align:left;color:green;">Subsidy Report</h5>
+                            <br />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="clientCode">Client Code:</label>
+                                        <input type="text" name="clientCode" id="clientCode" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="accountNumber">Account Number:</label>
+                                        <select name="accountNumber" id="accountNumber" class="form-control">
+                                            <option value="">Select Account Number</option>
+                                            <option value="1">Account 1</option>
+                                            <option value="2">Account 2</option>
+                                            <option value="3">Account 3</option>
+                                            <!-- Add more options as needed -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="quarter">Quarter:</label>
+                                        <select name="quarter" id="quarter" class="form-control">
+                                            <option value="">Select Quarter</option>
+                                            <option value="Q1">Q1</option>
+                                            <option value="Q2">Q2</option>
+                                            <option value="Q3">Q3</option>
+                                            <option value="Q4">Q4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6" style="text-align:left;">
+                                    <button type="submit" class="btn" style="background-color: #008d4c;color:#ffffff"><i class="fa fa-upload"></i> Search</button>
+                                    <button type="button" class="btn" onclick="window.history.back()" style="background-color: #3c8dbc;color:#ffffff"><i class="fa fa-times"></i> Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!-- New Card View for Table -->
+            <div class="card card-4">
+                <div class="card-body card-outline card-primary">
+                    <h5 style="text-align:left;color:green;">Records</h5>
+                    <input type="text" id="searchBox" placeholder="Search..." class="form-control" style="width: 300px; margin-bottom: 10px;">
+                    <table class="table table-bordered">
+                        <thead class="table-header" style="background-color: green; color: white;">
+                            <tr>
+                                <th>#</th> <!-- Serial Number Column -->
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>FISCAL YEAR</th>
+                                <th>QUARTER</th>
+                                <th>SOL ID</th>
+                                <th>LOAN TYPE</th>
+                                <th>CLIENT CODE</th>
+                                <th>LOAN ACCOUNT</th>
+                                <th>NAME OF BORROWER</th>
+                                <th>SUBDIY INTEREST AMOUNT</th>
+                                <th>SUBSIDY CATEGORY</th>
+                                <th>REMARKS</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recordsTable">
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                int serialNumber = (currentPage - 1) * rowsPerPage + (i + 1); // Calculate serial number
+                                <tr>
+                                    <td>@serialNumber</td> <!-- Display Serial Number -->
+                                    <td><input type="checkbox" class="recordCheckbox"></td>
+                                    <td>@Model[i].FISCAL_YEAR</td>
+                                    <td>@Model[i].QUARTER</td>
+                                    <td>@Model[i].SOL_ID</td>
+                                    <td>@Model[i].LOAN_TYPE</td>
+                                    <td>@Model[i].CLIENT_CODE</td>
+                                    <td>@Model[i].LOAN_ACCOUNT</td>
+                                    <td>@Model[i].NAME_OF_BORROWER</td>
+                                    <td>@Model[i].SUBDIY_INTEREST_AMOUNT</td>
+                                    <td>@Model[i].SUBSIDY_CATEGORY</td>
+                                    <td>@Model[i].REMARKS</td>
+                                    <td>@Model[i].STATUS</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="form-group mb-0">
+                            <label for="recordsPerPage" class="mr-2">Records per page:</label>
+                            <select id="recordsPerPage" class="form-control" style="width: 100px; display: inline-block;">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-secondary" id="prevPage">Previous</button>
+                            <div id="pageNumbers" class="page-numbers mx-2"></div>
+                            <button class="btn btn-secondary" id="nextPage">Next</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="loadingDialog" class="loading-dialog hidden">
+    <div class="loading-content">
+        <img src="~/Image/logo.png" alt="Sanima Bank Logo" class="loading-logo">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Uploading Data...</div>
+    </div>
+</div>
+
+<script src="~/JavaScript/SubsidyScript.js"></script>
+<script>
+    let currentPage = 1;
+    let rowsPerPage = 5; // Default value
+    const rows = document.querySelectorAll('#recordsTable tr');
+    let totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    function updateTable() {
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        // Reset all rows to hidden first
+        rows.forEach((row, index) => {
+            if (index === 0) return; // Skip the header row if it exists
+            row.style.display = 'none'; // Hide all rows initially
+        });
+
+        // Show the rows for the current page
+        for (let index = start; index < end && index < rows.length; index++) {
+            const row = rows[index];
+            row.style.display = ''; // Show the row
+
+            // Update serial number
+            const serialNumber = start + index + 1; // Calculate serial number
+            row.cells[0].innerText = serialNumber; // Update the serial number cell
+        }
+
+        updatePaginationControls();
+    }
+
+
+    function updatePaginationControls() {
+        const pageNumbersContainer = document.getElementById('pageNumbers');
+        pageNumbersContainer.innerHTML = ''; // Clear existing page numbers
+
+        // Create page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.className = 'btn btn-secondary page-button';
+            pageButton.onclick = () => {
+                currentPage = i;
+                updateTable();
+            };
+
+            // Add ellipses
+            if (i > 1 && i < totalPages && (i < currentPage - 1 || i > currentPage + 1)) {
+                if (i === currentPage - 2 || i === currentPage + 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    pageNumbersContainer.appendChild(ellipsis);
+                }
+                continue;
+            }
+
+            pageNumbersContainer.appendChild(pageButton);
+        }
+    }
+
+    document.getElementById('prevPage').addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTable();
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            updateTable();
+        }
+    });
+
+    // Update records per page dynamically
+    document.getElementById('recordsPerPage').addEventListener('change', function () {
+        rowsPerPage = parseInt(this.value);
+        currentPage = 1; // Reset to first page
+        updateTable();
+    });
+
+    // Search functionality
+    document.getElementById('searchBox').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const filteredRows = Array.from(rows).filter(row => {
+            const cells = row.getElementsByTagName('td');
+            return Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchTerm));
+        });
+
+        // Update total pages based on filtered results
+        totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        currentPage = 1; // Reset to first page
+        rows.forEach(row => row.style.display = 'none'); // Hide all rows
+        filteredRows.forEach((row, index) => {
+            row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
+        });
+
+        // Update pagination controls
+        updatePaginationControls();
+    });
+
+    // Select All Checkbox Functionality
+    document.getElementById('selectAll').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('.recordCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Initial table update
+    updateTable();
+
+
+</script>

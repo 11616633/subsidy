@@ -1,0 +1,225 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+<link href="~/css/custom-font-awesome.min.css" rel="stylesheet" />
+<style>
+    .nav-sidebar .nav-item > .nav-link {
+        color: white;
+    }
+
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .sidebar .nav-item:hover {
+        background-color: #E5B41C;
+        color: #ffffff;
+    }
+
+    .sidebar a:hover {
+        background-color: #E5B41C;
+        color: #ffffff;
+    }
+
+    .active {
+        background-color: red !important;
+        color: white !important;
+        Set your desired text color
+    }
+
+
+
+    /*.nav-item.active {
+        background-color: red !important;
+        color: white !important;
+    }
+
+    .nav-item:hover {
+        background-color: #E5B41C;
+    }
+
+    .collapse .nav-item.active-ul {
+        background-color: green !important;
+        color: white !important;
+    }
+
+        .collapse .nav-item.active-ul:hover {
+            background-color: #E5B41C !important;
+        }*/
+
+
+</style>
+
+@*<script>
+
+
+        $(document).ready(function () {
+            $('.nav-link[data-toggle="collapse"]').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var $submenu = $(this).next('.collapse');
+                var $otherSubmenus = $('.collapse').not($submenu);
+
+                // Close other open dropdowns
+                $otherSubmenus.removeClass('show');
+                $('.nav-link').removeClass('active');
+
+                // Toggle the visibility of the submenu
+                if ($submenu.hasClass('show')) {
+                    e.preventDefault();
+                    $submenu.removeClass('show');
+                    $(this).removeClass('active');
+                } else {
+                    e.preventDefault();
+                    $submenu.addClass('show');
+                    $(this).addClass('active');
+                }
+            });
+
+            // Highlight the clicked item in red
+            $('.nav-link:not([data-toggle="collapse"])').on('click', function () {
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // Change background color of li elements under ul to green
+            $('.collapse .nav-link').on('click', function () {
+                $('.collapse .nav-link').removeClass('active-ul');
+                $(this).addClass('active-ul');
+            });
+
+            // Prevent the collapse of the dropdown when clicking on submenu items
+            $('.collapse').on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+
+    </script>*@
+
+<script src="~/JavaScript/SideBar.js"></script>
+
+
+@*<div class="sidebar">*@
+<!-- Sidebar Menu -->
+<nav class="mt-2">
+
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+            <a href="/Home/Index" class="nav-link" style="color:white;">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link" style="color:white;">
+                <i class="nav-icon fas fa-plus-square"></i>
+                <p>Uploads</p>
+            </a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li class="">
+                    <a href="/Home/UploadSubsidy" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <p>Report Upload</p>
+                    </a>
+                </li>
+                @*<li class="">
+                    <a href="/Home/UploadPOSTXNReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <p>TXN Upload</p>
+                    </a>
+                </li>*@
+
+                @*<li class="">
+                        <a href="/Home/BatchConverter" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                            <i class="nav-icon fas fa-upload"></i>
+                            <p>Batch Converter</p>
+                        </a>
+                    </li>*@
+
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link" style="color:white;">
+                <i class="nav-icon fas fa-plus-square"></i>
+                <p>Reports</p>
+            </a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+
+                <li class="">
+                    <a href="/Home/SubsidyReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                        <i class="nav-icon fa fa-hand-o-right"></i>
+                        <p>Subsidy Report</p>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/Home/SubsidySumReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                        <i class="nav-icon fa fa-hand-o-right"></i>
+                        <p>Report</p>
+                    </a>
+                </li>
+                @*<li class="">
+            <a href="/Home/ShowPOSTXNReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                <i class="nav-icon fa fa-hand-o-right"></i>
+                <p>Transaction</p>
+            </a>
+        </li>
+        <li class="">
+            <a href="/Home/ShowSettlementandTxnReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                <i class="nav-icon fa fa-hand-o-right"></i>
+                <p>Settlement and Transaction</p>
+            </a>
+        </li>
+        <li class="">
+            <a href="/Home/PendingTransactionReport" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                <i class="nav-icon fa fa-hand-o-right"></i>
+                <p>Pending Transaction</p>
+            </a>
+        </li>
+        <li class="">
+            <a href="/Home/RevenueSharing" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                <i class="nav-icon fa fa-hand-o-right"></i>
+                <p> Revenue Sharing</p>
+            </a>
+        </li>
+        <li class="">
+            <a href="/Home/SettlementAndTxnAndVisa" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                <i class="nav-icon fa fa-hand-o-right"></i>
+                <p> Final Report</p>
+            </a>
+        </li>*@
+            </ul>
+        </li>
+
+        @*<li class="nav-item">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link" style="color:white;">
+                    <i class="nav-icon fas fa-plus-square"></i>
+                    <p>Acquiring Details</p>
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li class="">
+                        <a href="/Home/AddAcquiringDetails" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                            <i class="nav-icon fas fa-plus-square"></i>
+                            <p>Add Acquiring Details</p>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/Home/ShowAcquiringDetails" class="nav-link" style="background: #1fb25a; color: #ffffff">
+                            <i class="nav-icon fa fa-hand-o-right"></i>
+                            <p>Show Acquiring Details</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>*@
+
+    </ul>
+
+</nav>
+
+
+

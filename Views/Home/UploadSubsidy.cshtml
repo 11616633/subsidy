@@ -1,0 +1,110 @@
+﻿@*@model NCHLReconciliation.Models.InwardTranModel*@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{ ViewData["Title"] = "Add Insurance Page";
+
+    string enteredBy = HttpContextAccessor.HttpContext.Session.GetString("ActiveDirectoryUserID");
+}
+
+<!-- Include CSS and JS -->
+<link href="~/css/custom_bootstrap.min.css" rel="stylesheet" />
+<script src="~/js/custom_bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="~/js/sweetalert2011.js"></script>
+
+<link href="~/css/loading.css" rel="stylesheet" />
+
+<style>
+
+
+    .card-primary.card-outline {
+        border-top-width: 4px;
+        border-top-style: solid;
+        border-top-color: #3c8dbc;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    input[type="text"], input[type="date"], input[type="file"] {
+        border: 0.1px solid #018db0;
+        border-radius: 4px;
+    }
+
+    label:not(.form-check-label):not(.custom-file-label) {
+        font-weight: 400;
+    }
+
+    textarea {
+        /*border: 0.1px solid #018db0;
+        border-radius: 4px;*/
+    }
+
+    .form-control {
+        border: 0.1px solid #018db0;
+        border-radius: 4px;
+    }
+
+    span {
+        font-size: 14px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="card card-4">
+                <div class="card-body card-outline card-primary">
+                    <form id="uploadForm" asp-action="UploadSubsidy" enctype="multipart/form-data" asp-controller="Home">
+                        <div id="page-content" class="container">
+                            <h5 style="text-align:left;color:green;">Upload Subsidy</h5>
+                            <br />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="FormFile">Choose Excel File:</label>
+                                        <input type="file" name="FormFile" id="FormFile" class="form-control" required>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-3">
+                                        <!-- Placeholder for future fields -->
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- Placeholder for future fields -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6" style="text-align:left;">
+                                    <button type="submit" class="btn" style="background-color: #008d4c;color:#ffffff"><i class="fa fa-upload"></i> Upload</button>
+                                    <button type="button" class="btn" onclick="window.history.back()" style="background-color: #3c8dbc;color:#ffffff"><i class="fa fa-times"></i> Cancel</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Placeholder for future content -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loadingDialog" class="loading-dialog hidden">
+    <div class="loading-content">
+        <img src="~/Image/logo.png" alt="Sanima Bank Logo" class="loading-logo">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Uploading Data...</div>
+    </div>
+</div>
+
+
+<script src="~/JavaScript/SubsidyScript.js"></script>
